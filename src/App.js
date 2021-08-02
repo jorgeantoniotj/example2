@@ -1,22 +1,49 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react'
+import Amplify, { Auth } from 'aws-amplify'
+
+Amplify.configure({
+    region: "region",
+    userPoolId: "userPoolId",
+    userPoolWebClientId: "userPoolWebClientId",
+    oauth: {
+        domain: "domain",
+        scope: [
+            'phone',
+            'email',
+            'profile',
+            'openid',
+            'aws.cognito.signin.user.admin',
+        ],
+        scopeInline: 'phone,email,profile,openid,aws.cognito.signin.user.admin',
+        redirectSignIn: "http://localhost:3000",
+        redirectSignOut: "http://localhost:3000",
+        responseType: 'code'
+  }
+})
 
 function App() {
+  const [data, setData] = useState('')
+
+  const google = ()=>{
+    Auth.federatedSignIn({provider: "Google"})
+  }
+
+  const facebook = ()=>{
+    Auth.federatedSignIn({provider: "Facebook"})
+  }
+
+  const apple = ()=>{
+    Auth.federatedSignIn({provider: "SignInWithApple"})
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={facebook}>FACEBOOK</button><br/>
+        <button onClick={google}>GOOGLE</button><br/>
+        <button onClick={apple}>APPLE ID</button>
+        <p>{data}</p>
       </header>
     </div>
   );
