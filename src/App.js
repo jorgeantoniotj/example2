@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Amplify, { Auth } from 'aws-amplify'
 
 Amplify.configure({
@@ -36,6 +36,15 @@ function App() {
   const apple = ()=>{
     Auth.federatedSignIn({provider: "SignInWithApple"})
   }
+
+  const loadData = ()=>{
+    setData('data')
+  }
+
+  useEffect(()=>{
+    loadData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="App">
